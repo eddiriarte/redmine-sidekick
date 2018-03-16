@@ -1,3 +1,6 @@
+import 'material-design-icons/iconfont/material-icons.css'
+import 'vuetify/dist/vuetify.css'
+
 import Vue from 'vue'
 import axios from 'axios'
 import Vuetify from 'vuetify'

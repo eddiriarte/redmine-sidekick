@@ -1,31 +1,20 @@
 <template>
 <v-app id="inspire">
-  <v-navigation-drawer fixed v-model="drawer" app>
+  <v-navigation-drawer class="no-drag" fixed v-model="drawer" app>
     <v-list dense>
-      <v-list-tile @click="() => console.log('home')">
+      <v-list-tile v-for="tile in sidebarDemo" :key="tile.label" @click.stop="to(tile.route)">
         <v-list-tile-action>
-          <v-icon>home</v-icon>
+          <v-icon>{{tile.icon}}</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Home</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile @click="() => console.log('contact_mail')">
-        <v-list-tile-action>
-          <v-icon>contact_mail</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Contact</v-list-tile-title>
+          <v-list-tile-title>{{tile.label}}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
   </v-navigation-drawer>
-  <v-toolbar color="indigo" dark fixed app>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-    <v-toolbar-title>Redmine Sidekick</v-toolbar-title>
-  </v-toolbar>
+  <main-toolbar @drawer="drawer = !drawer"></main-toolbar>
   <v-content>
-    <v-container fluid fill-height>
+    <v-container fluid fill-height id="app-wrapper">
       <v-layout justify-center align-center>
         <v-flex text-xs-center>
           <router-view></router-view>
@@ -33,21 +22,37 @@
       </v-layout>
     </v-container>
   </v-content>
-  <!-- <v-footer color="indigo" app>
-    <span class="white--text">&copy; 2017</span>
-  </v-footer> -->
 </v-app>
 </template>
 
 <script>
+import MainToolbar from './components/MainToolbar'
+
 export default {
   name: 'redmine-sidekick',
+  components: { MainToolbar },
   data: () => ({
-    drawer: null
-  })
+    drawer: null,
+    sidebarDemo: [
+      { icon: 'home', label: 'Home', route: '#/' },
+      { icon: 'view_headline', label: 'Projects', route: '#/projects' },
+      { icon: 'insert_drive_file', label: 'Issue Form', route: '#/issue' },
+      { icon: 'camera', label: 'Screen Sources', route: '#/screens' },
+      { icon: 'wallpaper', label: 'Image Editor', route: '#/editor' }
+    ]
+  }),
+  methods: {
+    echo (msg) { console.log(msg) },
+    to (route) {
+      console.log('goto', route)
+      location.hash = route
+    }
+  }
 }
 </script>
 
 <style>
-/* CSS */
+#app-wrapper, .no-drag {
+  -webkit-app-region: no-drag;
+}
 </style>
